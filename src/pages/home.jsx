@@ -119,8 +119,8 @@
 
             <div className="flex flex-col bg-[#452C27]">
                 <div className="mt-20 mb-30 flex justify-center relative">
-                    <div className="absolute bg-[#2A3E3F] w-67 h-12 top-20 right-104"></div>
-                        <a href="/Lookbook" className="absolute top-1 right-105 z-30 hover:scale-110 transition-transform">
+                    <div className="absolute bg-[#2A3E3F] w-67 h-12 top-20 ml-40"></div>
+                        <a href="/Lookbook" className="absolute top-1 ml-95 z-30 hover:scale-110 transition-transform">
                             <img src={Arrow} alt="Go to Lookbook" className="w-12"/>
                         </a>
                     
