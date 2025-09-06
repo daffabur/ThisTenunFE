@@ -21,38 +21,10 @@ const PLACEHOLDER =
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
-  return /^https?:\/\//i.test(s) ? s : `${API}${s.startsWith("/") ? s : `/${s}`}`;
+  return /^https?:\/\//i.test(s)
+    ? s
+    : `${API}${s.startsWith("/") ? s : `/${s}`}`;
 };
-
-// *** BARU: normalisasi path gambar agar selalu valid ***
-const cleanImageUrl = (url) => {
-  if (!url) return null;
-  let s = String(url).trim();
-
-  // ganti backslash windows -> slash
-  s = s.replace(/\\/g, "/");
-
-  // jika relatif, jadi absolut ke domain API
-  if (!/^https?:\/\//i.test(s)) {
-    s = `${API}${s.startsWith("/") ? s : `/${s}`}`;
-  }
-
-  // singkirkan double slash di tengah path (kecuali setelah http(s):)
-  s = s.replace(/([^:]\/)\/+/g, "$1");
-
-  // encode segment path yang ada spasi/karakter khusus
-  try {
-    const u = new URL(s);
-    u.pathname = u.pathname
-      .split("/")
-      .map((seg) => encodeURIComponent(decodeURIComponent(seg)))
-      .join("/");
-    return u.toString();
-  } catch {
-    return s;
-  }
-};
-
 const parseArray = (data) =>
   Array.isArray(data)
     ? data
@@ -100,7 +72,7 @@ function Home() {
             title: it.title || "Untitled",
             summary:
               it.summary || (it.content ? String(it.content).slice(0, 160) : ""),
-            image: cleanImageUrl(it.imageUrl) || PLACEHOLDER,
+            image: absolutize(it.imageUrl) || PLACEHOLDER,
             date: it.publishedAt || it.createdAt || null,
           }))
           .sort((a, b) => {
@@ -140,7 +112,8 @@ function Home() {
           region:
             (it.province && (it.province.name || it.province.nama || it.province)) ||
             "-",
-          image: cleanImageUrl(it.linkGambar) || PLACEHOLDER,
+          // gunakan tenunImageUrl
+          image: it.tenunImageUrl ? absolutize(it.tenunImageUrl) : PLACEHOLDER,
         }));
 
         setTenunList(mapped);
@@ -242,20 +215,16 @@ function Home() {
                   src={t.image}
                   alt={t.name}
                   className="w-40 h-56 mt-15 rounded-lg object-cover"
-                  loading="lazy"
                   onError={(e) => {
                     e.currentTarget.src = PLACEHOLDER;
                   }}
                 />
-                {/* Teks ditaruh absolute tapi di bawah agar tidak nutup gambar */}
-                <div className="absolute left-2 bottom-4">
-                  <p className="font-playfair text-white text-sm font-bold drop-shadow">
-                    {t.name}
-                  </p>
-                  <p className="font-poppins text-white text-xs drop-shadow">
-                    {t.region}
-                  </p>
-                </div>
+                <p className="absolute bottom-8 left-2 font-playfair text-white text-sm font-bold">
+                  {t.name}
+                </p>
+                <p className="absolute bottom-2 left-2 font-poppins text-white text-xs">
+                  {t.region}
+                </p>
               </div>
             ))
           )}
