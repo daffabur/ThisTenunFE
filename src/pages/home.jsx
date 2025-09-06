@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
+import Masonry from "react-masonry-css";
+
 import Hero from "../assets/hero.svg";
 import figure1 from "../assets/1.svg";
 import Ulos from "../assets/ulos.svg";
 import Arrow from "../assets/arrow.svg";
-import Gal from "../assets/Gallery.svg";
+import Gal from "../assets/Gallery.svg"; // fallback untuk inspo
 import artic from "../assets/article.svg";
 
 // dua Link berbeda: scroll & router (pakai alias supaya tidak bentrok)
@@ -14,17 +16,37 @@ import { Link as RouterLink } from "react-router-dom";
 const API = "https://thistenunbetest-production.up.railway.app";
 const ENDPOINT_ARTICLES = `${API}/api/articles`;
 const ENDPOINT_TENUN = `${API}/api/tenun`;
+const ENDPOINT_INSPO = `${API}/api/inspo`;
 const PLACEHOLDER =
   "https://via.placeholder.com/1200x800?text=This+Tenun+Article";
 
-// helpers aman
+/* berapa banyak inspo yang ditampilkan */
+const INSPO_TAKE = 9;
+
+/* ===== helpers ===== */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
-  return /^https?:\/\//i.test(s)
-    ? s
-    : `${API}${s.startsWith("/") ? s : `/${s}`}`;
+  return /^https?:\/\//i.test(s) ? s : `${API}${s.startsWith("/") ? s : `/${s}`}`;
 };
+
+const normalizeImage = (url) => {
+  if (!url) return null;
+  let s = String(url).trim().replace(/\\/g, "/");
+  if (!/^https?:\/\//i.test(s)) s = `${API}${s.startsWith("/") ? s : `/${s}`}`;
+  s = s.replace(/([^:]\/)\/+/g, "$1");
+  try {
+    const u = new URL(s);
+    u.pathname = u.pathname
+      .split("/")
+      .map((seg) => encodeURIComponent(decodeURIComponent(seg)))
+      .join("/");
+    return u.toString();
+  } catch {
+    return s;
+  }
+};
+
 const parseArray = (data) =>
   Array.isArray(data)
     ? data
@@ -33,6 +55,7 @@ const parseArray = (data) =>
     : Array.isArray(data?.items)
     ? data.items
     : [];
+
 const formatDate = (iso) => {
   if (!iso) return "—";
   const d = new Date(iso);
@@ -45,17 +68,22 @@ const formatDate = (iso) => {
 };
 
 function Home() {
-  // ===== state: STORIES (section paling bawah) =====
+  // ===== STORIES (section paling bawah) =====
   const [stories, setStories] = useState([]);
   const [loadingStories, setLoadingStories] = useState(true);
   const [errStories, setErrStories] = useState(null);
 
-  // ===== state: TENUN (section Explore) =====
+  // ===== TENUN (Explore) =====
   const [tenunList, setTenunList] = useState([]);
   const [loadingTenun, setLoadingTenun] = useState(true);
   const [errTenun, setErrTenun] = useState(null);
 
-  // Fetch STORIES
+  // ===== INSPO (Lookbook masonry) =====
+  const [inspoList, setInspoList] = useState([]);
+  const [loadingInspo, setLoadingInspo] = useState(true);
+  const [errInspo, setErrInspo] = useState(null);
+
+  /* ---------- Fetch STORIES ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -72,7 +100,7 @@ function Home() {
             title: it.title || "Untitled",
             summary:
               it.summary || (it.content ? String(it.content).slice(0, 160) : ""),
-            image: absolutize(it.imageUrl) || PLACEHOLDER,
+            image: normalizeImage(it.imageUrl) || PLACEHOLDER,
             date: it.publishedAt || it.createdAt || null,
           }))
           .sort((a, b) => {
@@ -86,7 +114,7 @@ function Home() {
         setErrStories(null);
       } catch (e) {
         if (e.name !== "AbortError") setErrStories(e.message || "Gagal memuat.");
-        setStories([]); // biar UI tetap tampil
+        setStories([]);
       } finally {
         setLoadingStories(false);
       }
@@ -94,7 +122,7 @@ function Home() {
     return () => ac.abort();
   }, []);
 
-  // Fetch TENUN untuk Explore
+  /* ---------- Fetch TENUN (Explore) ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -105,15 +133,16 @@ function Home() {
         const raw = await res.json();
         const arr = parseArray(raw);
 
-        // Ambil 3 item pertama agar sesuai tampilan contoh
         const mapped = arr.slice(0, 3).map((it, idx) => ({
           id: it.id ?? idx,
           name: it.jenisTenun || "Tenun",
           region:
             (it.province && (it.province.name || it.province.nama || it.province)) ||
             "-",
-          // gunakan tenunImageUrl
-          image: it.tenunImageUrl ? absolutize(it.tenunImageUrl) : PLACEHOLDER,
+          image:
+            normalizeImage(it.tenunImageUrl) ||
+            normalizeImage(it.imageUrl) ||
+            PLACEHOLDER,
         }));
 
         setTenunList(mapped);
@@ -129,14 +158,69 @@ function Home() {
     return () => ac.abort();
   }, []);
 
-  const hero = useMemo(
-    () => (Array.isArray(stories) && stories[0]) || null,
-    [stories]
-  );
+  /* ---------- Fetch INSPO (Lookbook masonry) ---------- */
+  useEffect(() => {
+    const ac = new AbortController();
+    (async () => {
+      try {
+        setLoadingInspo(true);
+        const res = await fetch(ENDPOINT_INSPO, { signal: ac.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const arr = parseArray(await res.json());
+
+        const imgs = arr
+          .map((it, idx) => {
+            const candidate =
+              it.inspoImageUrl ||
+              it.imageUrl ||
+              it.photoUrl ||
+              it.image ||
+              it.url;
+            const image = normalizeImage(candidate);
+            return image
+              ? {
+                  id: it.id ?? idx,
+                  image,
+                  title: it.title || it.caption || "Inspo",
+                }
+              : null;
+          })
+          .filter(Boolean);
+
+        // acak dan ambil N
+        const shuffled = imgs
+          .map((x) => ({ x, r: Math.random() }))
+          .sort((a, b) => a.r - b.r)
+          .map((o) => o.x)
+          .slice(0, INSPO_TAKE);
+
+        setInspoList(shuffled);
+        setErrInspo(null);
+      } catch (e) {
+        if (e.name !== "AbortError")
+          setErrInspo(e.message || "Gagal memuat inspirasi lookbook.");
+        setInspoList([]);
+      } finally {
+        setLoadingInspo(false);
+      }
+    })();
+    return () => ac.abort();
+  }, []);
+
+  const hero = useMemo(() => (Array.isArray(stories) && stories[0]) || null, [stories]);
   const sideList = useMemo(
     () => (Array.isArray(stories) && stories.length > 1 ? stories.slice(1, 5) : []),
     [stories]
   );
+
+  /* Masonry breakpoints */
+  const masonryBreakpoints = {
+    default: 3,
+    1280: 3,
+    1024: 3,
+    900: 2,
+    640: 1,
+  };
 
   return (
     <div>
@@ -249,19 +333,49 @@ function Home() {
         </div>
       </div>
 
-      {/* ===== LOOKBOOK TEASER ===== */}
+      {/* ===== LOOKBOOK: Discover Your Outfit (masonry dari /api/inspo) ===== */}
       <div className="flex flex-col bg-[#452C27]">
-        <div className="mt-20 mb-30 flex justify-center relative">
-          <div className="absolute bg-[#2A3E3F] w-67 h-12 top-20 ml-40"></div>
-          <RouterLink to="/lookbook" className="absolute top-1 ml-95 z-30 hover:scale-110 transition-transform">
-            <img src={Arrow} alt="Go to Lookbook" className="w-12" />
-          </RouterLink>
-          <h1 className="font-playfair text-white font-bold text-5xl w-110 text-center leading-15 z-10 relative">
-            Discover Your Outfit With Tenun
+        <div className="mt-20 mb-6 flex justify-center items-center gap-3 relative">
+          <h1 className="font-playfair text-white font-bold text-5xl text-center leading-tight">
+            Discover Your <br className="sm:hidden" />
+            <span className="inline-flex items-center gap-2">Outfit With Tenun</span>
           </h1>
+          <RouterLink to="/lookbook" className="ml-2 hover:scale-110 transition-transform" aria-label="Go to Lookbook">
+            <img src={Arrow} alt="" className="w-8 inline-block align-middle" />
+          </RouterLink>
         </div>
-        <div className="flex justify-center">
-          <img src={Gal} alt="figure1" className="w-2xl mt-2" />
+
+        <div className="flex justify-center px-6 pb-20">
+          {loadingInspo ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+              {new Array(INSPO_TAKE).fill(0).map((_, i) => (
+                <div key={i} className="w-full h-72 bg-black/20 rounded-2xl animate-pulse" />
+              ))}
+            </div>
+          ) : errInspo ? (
+            <div className="text-white">{errInspo}</div>
+          ) : inspoList.length ? (
+            <Masonry
+              breakpointCols={masonryBreakpoints}
+              className="flex gap-6 w-full max-w-5xl"
+              columnClassName="flex flex-col gap-6"
+            >
+              {inspoList.map((p) => (
+                <img
+                  key={p.id}
+                  src={p.image}
+                  alt={p.title}
+                  className="w-full rounded-2xl object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = Gal; // fallback lokal
+                  }}
+                />
+              ))}
+            </Masonry>
+          ) : (
+            <img src={Gal} alt="Lookbook" className="w-2xl mt-2 rounded-2xl" />
+          )}
         </div>
       </div>
 
