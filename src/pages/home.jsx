@@ -43,14 +43,20 @@
             </div>
 
             <div id="2" className="bg-[#452C27] relative h-screen w-full flex flex-row gap-50 ">
-                <div className="ml-10">
-                    <h1 className="md:mx-20 mt-40 font-playfair font-bold md:text-5xl text-white inline-block border-2 border-[#F6D69B] rounded-full px-6 pt-2 pb-3">
-                        What is Tenun?
-                    </h1>
-                    <p className="text-white text-justify pl-25 mt-5 w-135 text- font-poppins font-light ">
-                        Tenun is Indonesia’s handwoven textile art, created by intertwining threads on a loom. Each region across the archipelago has its own distinctive tenun, carrying unique motifs, colors, and stories that reflect local culture and identity.<br /> <br />
-                        More than just fabric, tenun is a heritage passed down through generations — once worn in rituals and ceremonies, now inspiring modern fashion and creative expression.
-                    </p>
+                <div>
+                    <div className="ml-10">
+                        <h1 className="md:mx-20 mt-40 font-playfair font-bold md:text-5xl text-white inline-block border-2 border-[#F6D69B] rounded-full px-6 pt-2 pb-3">
+                            What is Tenun?
+                        </h1>
+                        <p className="text-white text-justify pl-25 mt-5 w-135 text- font-poppins font-light ">
+                            Tenun is Indonesia’s handwoven textile art, created by intertwining threads on a loom. Each region across the archipelago has its own distinctive tenun, carrying unique motifs, colors, and stories that reflect local culture and identity.<br /> <br />
+                            More than just fabric, tenun is a heritage passed down through generations — once worn in rituals and ceremonies, now inspiring modern fashion and creative expression.
+                        </p>
+                    </div>
+
+                    <div className="ml-117">
+                        <a href="/about" className="border-1 border-[#F6D69B] rounded-full px-6 text-white ">Find Out</a>
+                    </div>
                 </div>
                 
                 <div>
@@ -140,7 +146,7 @@
                     <h1 className="font-playfair font-bold  text-white mt-10 ml-5 mb-20 text-4xl w-50">Threads <br/>Of Strories</h1>
                 </div>
 
-                <div className="flex flex-row mb-50 gap-10 justify-center">
+                <div className="flex flex-row mb-20 gap-10 justify-center">
                     <div className="flex flex-col bg-white rounded-2xl mb-10">
                         <img src={artic} alt="figure1" className="w-md mt-5 mb-10 px-5"/>
                         <h1 className="ml-5 font-poppins font-bold text-xl">Stories of Tenun Ikat Tanimbar</h1>
