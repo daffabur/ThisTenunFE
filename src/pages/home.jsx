@@ -10,7 +10,7 @@ import artic from "../assets/article.svg";
 
 // dua Link berbeda: scroll & router (pakai alias supaya tidak bentrok)
 import { Link as ScrollLink } from "react-scroll";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as a } from "react-router-dom";
 
 /* ==== konfigurasi fetch API ==== */
 const API = "https://thistenunbetest-production.up.railway.app";
@@ -243,7 +243,7 @@ function Home() {
             traditions woven by the hands of Indonesia’s artisans
           </p>
           <ScrollLink
-            to="2"
+            href="2"
             smooth={true}
             duration={1200}
             offset={0}
@@ -330,13 +330,13 @@ function Home() {
                 </div>
               ))}
               {/* Kartu ke-4 = See All */}
-              <RouterLink to="/explore" className="relative block">
+              <a href="/explore" className="relative block">
                 <img src={Ulos} alt="See all" className="w-full h-56 rounded-lg object-cover" />
                 <img src={Arrow} alt="arrow" className="w-5 absolute inset-0 m-auto top-[42%]" />
                 <p className="absolute inset-0 flex items-center justify-center text-center px-8 leading-6 font-poppins text-white text-base">
                   See All Regions
                 </p>
-              </RouterLink>
+              </a>
             </div>
           )}
         </div>
@@ -376,7 +376,7 @@ function Home() {
 
                 {/* Card terakhir: See All */}
                 <div className="relative transform transition duration-300 hover:-translate-y-2 hover:shadow-lg">
-                  <RouterLink to="/explore">
+                  <a href="/explore">
                     <img
                       src={Ulos}
                       alt="See all"
@@ -390,7 +390,7 @@ function Home() {
                     <p className="absolute inset-0 flex items-center justify-center text-center px-10 mt-4 leading-6 font-poppins text-white text-lg">
                       See All Regions
                     </p>
-                  </RouterLink>
+                  </a>
                 </div>
               </>
             )}
@@ -412,13 +412,13 @@ function Home() {
             Discover Your <br className="sm:hidden" /> <br/>
             <span className="inline-flex items-center gap-2 ">Outfit With Tenun</span>
           </h1>
-          <RouterLink
-            to="/lookbook"
+          <a
+            href="/lookbook"
             className="ml-2 hover:scale-110 transition-transform"
             aria-label="Go to Lookbook"
           >
             <img src={Arrow} alt="" className="w-8 inline-block align-middle" />
-          </RouterLink>
+          </a>
         </div>
 
         <div className="flex justify-center px-6 pb-20">
@@ -471,7 +471,7 @@ function Home() {
               {loadingStories ? (
                 <div className="w-full h-[360px] rounded-xl bg-black/10 animate-pulse" />
               ) : hero ? (
-                <RouterLink to={`/stories/${encodeURIComponent(hero.slug || "")}`}>
+                <a href={`/stories/${encodeURIComponent(hero.slug || "")}`}>
                   <img
                     src={hero.image || artic}
                     alt={hero.title}
@@ -480,7 +480,7 @@ function Home() {
                       e.currentTarget.src = PLACEHOLDER;
                     }}
                   />
-                </RouterLink>
+                </a>
               ) : (
                 <img src={artic} alt="placeholder" className="w-full rounded-xl" />
               )}
@@ -502,11 +502,11 @@ function Home() {
               ) : hero ? (
                 <>
                   <p className="text-xs text-black/60 mb-1">{formatDate(hero.date)}</p>
-                  <RouterLink to={`/stories/${encodeURIComponent(hero.slug || "")}`}>
+                  <a href={`/stories/${encodeURIComponent(hero.slug || "")}`}>
                     <h2 className="ml-0 font-poppins font-bold text-xl text-black hover:underline">
                       {hero.title}
                     </h2>
-                  </RouterLink>
+                  </a>
                   {hero.summary && (
                     <p className="ml-0 mt-2 font-poppins text-sm text-black/80">{hero.summary}</p>
                   )}
@@ -520,9 +520,9 @@ function Home() {
           {/* kanan: list + See All di dalam kotak */}
           <div className="relative bg-white rounded-2xl flex justify-center max-w-[700px] w-full">
             <div className="absolute right-6 top-4">
-              <RouterLink to="/stories" className="underline font-poppins hover:opacity-80">
+              <a href="/stories" className="underline font-poppins hover:opacity-80">
                 See All
-              </RouterLink>
+              </a>
             </div>
 
             <div className="flex flex-col gap-5 mt-16 py-8 px-5 sm:px-8 w-full">
@@ -537,9 +537,9 @@ function Home() {
                     </div>
                   </div>
                 ) : (
-                  <RouterLink
+                  <a
                     key={p.id}
-                    to={`/stories/${encodeURIComponent(p.slug || "")}`}
+                    href={`/stories/${encodeURIComponent(p.slug || "")}`}
                     className="group"
                   >
                     <div className="flex flex-row items-center gap-4">
@@ -560,7 +560,7 @@ function Home() {
                         </h3>
                       </div>
                     </div>
-                  </RouterLink>
+                  </a>
                 )
               )}
 

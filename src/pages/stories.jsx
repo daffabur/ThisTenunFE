@@ -116,7 +116,7 @@ export default function Stories() {
                   {formatDate(hero.date)}
                 </p>
                 <h1 className="font-playfair text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] leading-snug">
-                  <Link to={`/stories/${hero.slug}`}>{hero.title}</Link>
+                  <a href={`/stories/${hero.slug}`}>{hero.title}</a>
                 </h1>
                 {hero.summary && (
                   <p className="mt-2 max-w-2xl text-white/90 text-sm sm:text-base leading-relaxed line-clamp-3 sm:line-clamp-none">
@@ -151,7 +151,7 @@ export default function Stories() {
                 key={p.id}
                 className="flex gap-3 sm:gap-4 rounded-2xl bg-white/95 backdrop-blur-sm p-3 sm:p-4 shadow-[0_10px_30px_rgba(0,0,0,0.25)] ring-1 ring-black/5 hover:translate-y-[-2px] transition"
               >
-                <Link to={`/stories/${p.slug}`} className="shrink-0">
+                <a href={`/stories/${p.slug}`} className="shrink-0">
                   <img
                     src={p.image}
                     alt={p.title}
@@ -161,18 +161,18 @@ export default function Stories() {
                       e.currentTarget.src = PLACEHOLDER;
                     }}
                   />
-                </Link>
+                </a>
                 <div className="min-w-0">
                   <p className="text-[12px] sm:text-[13px] text-[#3b241f]/80">
                     {formatDate(p.date)}
                   </p>
                   <h3 className="mt-1 font-poppins font-semibold text-[#1d1d1f] leading-snug sm:leading-6 text-sm sm:text-base">
-                    <Link
-                      to={`/stories/${p.slug}`}
+                    <a
+                      href={`/stories/${p.slug}`}
                       className="hover:underline decoration-2 underline-offset-2"
                     >
                       {p.title}
-                    </Link>
+                    </a>
                   </h3>
                   {p.summary && (
                     <p className="mt-1 text-xs sm:text-sm text-[#2b2b2b]/80 line-clamp-2 sm:line-clamp-3">
