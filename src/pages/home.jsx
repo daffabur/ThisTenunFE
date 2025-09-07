@@ -5,7 +5,7 @@ import Hero from "../assets/hero.svg";
 import figure1 from "../assets/1.svg";
 import Ulos from "../assets/ulos.svg";
 import Arrow from "../assets/arrow.svg";
-import Gal from "../assets/Gallery.svg"; // fallback untuk inspo
+import Gal from "../assets/gallery.svg"; // fallback untuk inspo
 import artic from "../assets/article.svg";
 
 // dua Link berbeda: scroll & router (pakai alias supaya tidak bentrok)
