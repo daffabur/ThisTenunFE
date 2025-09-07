@@ -5,14 +5,12 @@ import Hero from "../assets/hero.svg";
 import figure1 from "../assets/1.svg";
 import Ulos from "../assets/ulos.svg";
 import Arrow from "../assets/arrow.svg";
-import Gal from "../assets/Gallery.svg"; // fallback untuk inspo
+import Gal from "../assets/gallery.svg"; 
 import artic from "../assets/article.svg";
 
-// dua Link berbeda: scroll & router (pakai alias supaya tidak bentrok)
 import { Link as ScrollLink } from "react-scroll";
 import { Link as RouterLink } from "react-router-dom";
 
-/* ==== konfigurasi fetch API ==== */
 const API = "https://thistenunbetest-production.up.railway.app";
 const ENDPOINT_ARTICLES = `${API}/api/articles`;
 const ENDPOINT_TENUN = `${API}/api/tenun`;
@@ -20,10 +18,8 @@ const ENDPOINT_INSPO = `${API}/api/inspo`;
 const PLACEHOLDER =
   "https://via.placeholder.com/1200x800?text=This+Tenun+Article";
 
-/* berapa banyak inspo yang ditampilkan */
 const INSPO_TAKE = 9;
 
-/* ===== helpers ===== */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
@@ -68,22 +64,18 @@ const formatDate = (iso) => {
 };
 
 function Home() {
-  // ===== STORIES (section paling bawah) =====
   const [stories, setStories] = useState([]);
   const [loadingStories, setLoadingStories] = useState(true);
   const [errStories, setErrStories] = useState(null);
 
-  // ===== TENUN (Explore) =====
   const [tenunList, setTenunList] = useState([]);
   const [loadingTenun, setLoadingTenun] = useState(true);
   const [errTenun, setErrTenun] = useState(null);
 
-  // ===== INSPO (Lookbook masonry) =====
   const [inspoList, setInspoList] = useState([]);
   const [loadingInspo, setLoadingInspo] = useState(true);
   const [errInspo, setErrInspo] = useState(null);
 
-  /* ---------- Fetch STORIES ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -122,7 +114,6 @@ function Home() {
     return () => ac.abort();
   }, []);
 
-  /* ---------- Fetch TENUN (Explore) ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -158,7 +149,6 @@ function Home() {
     return () => ac.abort();
   }, []);
 
-  /* ---------- Fetch INSPO (Lookbook masonry) ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -187,7 +177,6 @@ function Home() {
           })
           .filter(Boolean);
 
-        // acak dan ambil N
         const shuffled = imgs
           .map((x) => ({ x, r: Math.random() }))
           .sort((a, b) => a.r - b.r)
@@ -213,7 +202,6 @@ function Home() {
     [stories]
   );
 
-  /* Masonry breakpoints */
   const masonryBreakpoints = {
     default: 3,
     1280: 3,
@@ -222,16 +210,13 @@ function Home() {
     640: 1,
   };
 
-  /* ==== helper untuk grid 2×2 di mobile (Explore) ==== */
   const mobileExploreItems = useMemo(() => {
-    // ambil 3 tenun + 1 kartu "See All" supaya pas 2x2
     const base = tenunList.slice(0, 3);
     return base;
   }, [tenunList]);
 
   return (
     <div className="bg-[#2A3E3F]">
-      {/* ===== HERO TOP ===== */}
       <div className="relative h-screen w-full">
         <img src={Hero} alt="Tenun hero" className="h-full w-full object-cover" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4">
@@ -254,7 +239,6 @@ function Home() {
         </div>
       </div>
 
-      {/* ===== WHAT IS TENUN ===== */}
       <div id="2"
         className="bg-[#452C27] w-full flex flex-col md:flex-row md:items-start gap-10 md:gap-30 px-6 lg:px-16 py-16 md:pt-30 md:pb-40"
       >
@@ -292,7 +276,6 @@ function Home() {
       </div>
 
 
-      {/* ===== EXPLORE ===== */}
       <div className="bg-[#2A3E3F] flex flex-col py-28 md:py-32">
         <div className="font-playfair font-bold text-white text-4xl sm:text-5xl flex flex-col items-center px-4">
           <h1 className="inline-flex items-center justify-center mx-auto text-center border-2 border-[#F6D69B] rounded-full px-8 py-1 max-w-[90%]">
@@ -301,7 +284,6 @@ function Home() {
           <h1 className="mt-2 text-center">Across Indonesia</h1>
         </div>
 
-        {/* MOBILE: Grid 2x2 tanpa slide */}
         <div className="mt-12 w-full px-4 md:hidden">
           {loadingTenun ? (
             <div className="grid grid-cols-2 gap-5">
@@ -329,7 +311,7 @@ function Home() {
                   </p>
                 </div>
               ))}
-              {/* Kartu ke-4 = See All */}
+
               <RouterLink to="/explore" className="relative block">
                 <img src={Ulos} alt="See all" className="w-full h-56 rounded-lg object-cover" />
                 <img src={Arrow} alt="arrow" className="w-5 absolute inset-0 m-auto top-[42%]" />
@@ -341,7 +323,6 @@ function Home() {
           )}
         </div>
 
-        {/* DESKTOP/TABLET: layout asli berjajar 4 */}
         <div className="hidden md:block">
           <div className="md:justify-center md:gap-10 flex gap-6 mt-12 px-4">
             {loadingTenun ? (
@@ -374,7 +355,6 @@ function Home() {
                   </div>
                 ))}
 
-                {/* Card terakhir: See All */}
                 <div className="relative transform transition duration-300 hover:-translate-y-2 hover:shadow-lg">
                   <RouterLink to="/explore">
                     <img
@@ -405,7 +385,6 @@ function Home() {
         </div>
       </div>
 
-      {/* ===== LOOKBOOK ===== */}
       <div className="flex flex-col bg-[#452C27]">
         <div className="mt-20 mb-6 flex justify-center items-center gap-3 relative px-4 md:pl-20">
           <h1 className="font-playfair text-white font-bold text-4xl sm:text-5xl text-center leading-tight">
@@ -444,7 +423,7 @@ function Home() {
                   className="w-full rounded-2xl object-cover"
                   loading="lazy"
                   onError={(e) => {
-                    e.currentTarget.src = Gal; // fallback lokal
+                    e.currentTarget.src = Gal;
                   }}
                 />
               ))}
@@ -455,7 +434,6 @@ function Home() {
         </div>
       </div>
 
-      {/* ===== THREADS OF STORIES ===== */}
       <div className="bg-[#2A3E3F] flex flex-col">
         <div className="flex flex-row items-center px-4 md:px-10">
           <div className="mt-9 bg-white w-1 h-22" />
@@ -465,7 +443,6 @@ function Home() {
         </div>
 
         <div className="flex flex-col md:flex-row md:items-start mb-20 gap-8 md:gap-10 justify-center px-4 md:px-6">
-          {/* kiri: hero card */}
           <div className="flex flex-col bg-white rounded-2xl mb-4 md:mb-10 max-w-[700px] w-full">
             <div className="px-5 pt-5">
               {loadingStories ? (
@@ -517,7 +494,6 @@ function Home() {
             </div>
           </div>
 
-          {/* kanan: list + See All di dalam kotak */}
           <div className="relative bg-white rounded-2xl flex justify-center max-w-[700px] w-full">
             <div className="absolute right-6 top-4">
               <RouterLink to="/stories" className="underline font-poppins hover:opacity-80">
