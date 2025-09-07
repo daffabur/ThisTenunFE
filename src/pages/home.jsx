@@ -244,38 +244,44 @@ function Home() {
         id="2"
         className="bg-[#452C27] w-full"
       >
-        <div className="mx-auto max-w-7xl px-6 lg:px-16 py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+        <div className="mx-auto max-w-7xl px-6 lg:px-16 py-16 md:py-24 grid grid-cols-1 md:grid-cols-[minmax(0,620px)_minmax(0,460px)] gap-10 md:gap-16 items-start">
           {/* Left text block */}
           <div className="md:pr-8">
-            <h1 className="inline-block border-2 border-[#F6D69B] rounded-full px-6 py-2 font-playfair font-bold text-white text-3xl md:text-5xl">
+            <h1 className="inline-block border-2 border-[#F6D69B] rounded-full px-6 pt-2 pb-3 font-playfair font-bold text-white text-3xl md:text-5xl">
               What is Tenun?
             </h1>
 
-            <p className="text-white text-justify md:text-left md:pl-8 mt-5 max-w-[54ch] text-base font-poppins font-light">
-              Tenun is Indonesia’s handwoven textile art, created by intertwining
-              threads on a loom. Each region across the archipelago has its own
-              distinctive tenun, carrying unique motifs, colors, and stories that
-              reflect local culture and identity.<br /> <br />
-              More than just fabric, tenun is a heritage passed down through
-              generations — once worn in rituals and ceremonies, now inspiring
-              modern fashion and creative expression.
-            </p>
+            <div className="md:pl-8 mt-5 max-w-[54ch]">
+              <p className="text-white text-base font-poppins font-light text-justify md:text-left">
+                Tenun is Indonesia’s handwoven textile art, created by intertwining
+                threads on a loom. Each region across the archipelago has its own
+                distinctive tenun, carrying unique motifs, colors, and stories that
+                reflect local culture and identity.
+              </p>
+              <p className="text-white text-base font-poppins font-light mt-6 text-justify md:text-left">
+                More than just fabric, tenun is a heritage passed down through
+                generations — once worn in rituals and ceremonies, now inspiring
+                modern fashion and creative expression.
+              </p>
 
-            {/* Button under paragraph (as in Figma) */}
-            <RouterLink
-              to="/about"
-              className="mt-6 inline-flex border border-[#F6D69B] rounded-full px-6 py-2 text-white hover:bg-[#F6D69B]/10 transition"
-            >
-              Discover more
-            </RouterLink>
+              {/* Button kecil, rata kanan */}
+              <div className="mt-5 flex justify-end">
+                <RouterLink
+                  to="/about"
+                  className="inline-flex items-center border border-[#F6D69B] rounded-full px-4 py-1 text-sm text-white hover:bg-[#F6D69B]/10 transition"
+                >
+                  Discover more
+                </RouterLink>
+              </div>
+            </div>
           </div>
 
           {/* Right image */}
-          <div className="flex justify-center md:justify-start">
+          <div className="flex justify-end">
             <img
               src={figure1}
               alt="figure1"
-              className="w-72 sm:w-80 md:w-96 lg:w-[20rem] rounded-xl mt-2 md:mt-0 shadow-lg object-cover"
+              className="w-[420px] lg:w-[460px] max-w-full rounded-xl shadow-lg object-cover md:mt-1"
             />
           </div>
         </div>
