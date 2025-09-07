@@ -239,42 +239,48 @@ function Home() {
         </div>
       </div>
 
-      <div id="2"
-        className="bg-[#452C27] w-full flex flex-col md:flex-row md:items-start gap-10 md:gap-30 px-6 lg:px-16 py-16 md:pt-30 md:pb-40"
+      {/* ================== WHAT IS TENUN (fixed to match Figma) ================== */}
+      <div
+        id="2"
+        className="bg-[#452C27] w-full"
       >
-        <div className="md:flex-1 md:mt-15 md:ml-12 relative order-2 md:order-1">
-          <h1 className="inline-block border-2 border-[#F6D69B] rounded-full px-6 pt-2 pb-3 font-playfair font-bold text-white text-3xl md:text-5xl">
-            What is Tenun?
-          </h1>
-          <p className="text-white text-justify md:text-left md:pl-8 mt-5 md:w-120 max-w-[54ch] text-base font-poppins font-light">
-            Tenun is Indonesia’s handwoven textile art, created by intertwining
-            threads on a loom. Each region across the archipelago has its own
-            distinctive tenun, carrying unique motifs, colors, and stories that
-            reflect local culture and identity.<br /> <br />
-            More than just fabric, tenun is a heritage passed down through
-            generations — once worn in rituals and ceremonies, now inspiring
-            modern fashion and creative expression.
-          </p>
+        <div className="mx-auto max-w-7xl px-6 lg:px-16 py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          {/* Left text block */}
+          <div className="md:pr-8">
+            <h1 className="inline-block border-2 border-[#F6D69B] rounded-full px-6 py-2 font-playfair font-bold text-white text-3xl md:text-5xl">
+              What is Tenun?
+            </h1>
 
-          <div className="mt-6 md:mt-0 md:absolute md:right-0">
-            <a
-              href="/about"
-              className="inline-block border border-[#F6D69B] rounded-full px-6 py-2 text-white"
+            <p className="text-white text-justify md:text-left md:pl-8 mt-5 max-w-[54ch] text-base font-poppins font-light">
+              Tenun is Indonesia’s handwoven textile art, created by intertwining
+              threads on a loom. Each region across the archipelago has its own
+              distinctive tenun, carrying unique motifs, colors, and stories that
+              reflect local culture and identity.<br /> <br />
+              More than just fabric, tenun is a heritage passed down through
+              generations — once worn in rituals and ceremonies, now inspiring
+              modern fashion and creative expression.
+            </p>
+
+            {/* Button under paragraph (as in Figma) */}
+            <RouterLink
+              to="/about"
+              className="mt-6 inline-flex border border-[#F6D69B] rounded-full px-6 py-2 text-white hover:bg-[#F6D69B]/10 transition"
             >
-              Find Out
-            </a>
+              Discover more
+            </RouterLink>
+          </div>
+
+          {/* Right image */}
+          <div className="flex justify-center md:justify-start">
+            <img
+              src={figure1}
+              alt="figure1"
+              className="w-72 sm:w-80 md:w-96 lg:w-[20rem] rounded-xl mt-2 md:mt-0 shadow-lg object-cover"
+            />
           </div>
         </div>
-
-        <div className="md:flex-1 flex justify-center md:justify-start order-1 md:order-2">
-          <img
-            src={figure1}
-            alt="figure1"
-            className="w-72 sm:w-80 md:w-96 lg:w-[20rem] rounded-xl mt-2 md:mt-6"
-          />
-        </div>
       </div>
-
+      {/* ======================================================================== */}
 
       <div className="bg-[#2A3E3F] flex flex-col py-28 md:py-32">
         <div className="font-playfair font-bold text-white text-4xl sm:text-5xl flex flex-col items-center px-4">
@@ -531,7 +537,7 @@ function Home() {
                         <p className="text-poppins font-light text-xs text-black/60">
                           {formatDate(p.date)}
                         </p>
-                        <h3 className="max-w-[22rem] sm:max-w-[26rem] text-poppins font-semibold text-sm leading-5 text-black group-hover:underline">
+                        <h3 className="max-w/[22rem] sm:max-w-[26rem] text-poppins font-semibold text-sm leading-5 text-black group-hover:underline">
                           {p.title}
                         </h3>
                       </div>
