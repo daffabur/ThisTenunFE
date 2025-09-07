@@ -1,7 +1,6 @@
 import AbHero from "../assets/aboutpic.svg";
 import Menenun from "../assets/menenun.svg";
-import iniTst1 from "../assets/test1.svg";
-import iniTst2 from "../assets/test2.svg";
+
 
 
 function About(){
