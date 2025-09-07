@@ -1,10 +1,10 @@
 // src/component/penjelasan.jsx
+import { scroller } from "react-scroll";
 import React from "react";
 
 const API = "https://thistenunbetest-production.up.railway.app";
 const PLACEHOLDER = "https://via.placeholder.com/800x480?text=No+Image";
 
-/* ---------- helpers ---------- */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
@@ -15,7 +15,6 @@ const toKey = (s = "") => String(s).replace(/[_-]+/g, " ").trim().toLowerCase();
 
 
 const CANON = {
-  // Aceh & DIY
   "aceh": "nanggroe aceh darussalam",
   "nad": "nanggroe aceh darussalam",
   "di aceh": "nanggroe aceh darussalam",
@@ -25,7 +24,6 @@ const CANON = {
   "yogyakarta": "daerah istimewa yogyakarta",
   "daerah istimewa yogyakarta": "daerah istimewa yogyakarta",
 
-  // Sumatra (BE kamu pakai “Sumatra …”)
   "sumatra utara": "sumatra utara",
   "sumatera utara": "sumatra utara",
   "sumut": "sumatra utara",
@@ -38,11 +36,9 @@ const CANON = {
   "sumatera barat": "sumatra barat",
   "sumbar": "sumatra barat",
 
-  // Banten (label peta sempat “PROBANTEN”)
   "banten": "banten",
   "probanten": "banten",
 
-  // lain-lain umum
   "babel": "bangka belitung",
   "bangka belitung": "bangka belitung",
 
@@ -54,7 +50,6 @@ const CANON = {
   "ntt": "nusa tenggara timur",
   "nusa tenggara timur": "nusa tenggara timur",
 
-  // Kalimantan (singkatan)
   "kalimantan barat": "kalimantan barat",
   "kalbar": "kalimantan barat",
   "kalimantan timur": "kalimantan timur",
@@ -66,7 +61,6 @@ const CANON = {
   "kalimantan utara": "kalimantan utara",
   "kaltara": "kalimantan utara",
 
-  // Sulawesi
   "sulawesi barat": "sulawesi barat",
   "sulbar": "sulawesi barat",
   "sulawesi selatan": "sulawesi selatan",
@@ -78,12 +72,10 @@ const CANON = {
   "sulawesi utara": "sulawesi utara",
   "sulut": "sulawesi utara",
 
-  // Maluku & Papua
   "maluku": "maluku",
   "maluku utara": "maluku utara",
   "malut": "maluku utara",
 
-  // satukan semua istilah “Papua* / Irian Jaya*” → “papua”
   "papua": "papua",
   "papua barat": "papua",
   "papua tengah": "papua",
@@ -95,7 +87,6 @@ const CANON = {
   "irian jaya tengah": "papua",
   "irian jaya timur": "papua",
 
-  // Jawa
   "dki": "dki jakarta",
   "jakarta": "dki jakarta",
   "dki jakarta": "dki jakarta",
@@ -107,10 +98,8 @@ const CANON = {
   "jawa timur": "jawa timur",
 };
 
-// normalisasi ke bentuk kunci pembanding
 const norm = (s = "") => {
   const k = toKey(s);
-  // ganti awalan "sumatera " -> "sumatra " bila belum masuk CANON
   const sfix = k.replace(/^sumatera\s+/, "sumatra ");
   return CANON[sfix] || CANON[k] || sfix;
 };
@@ -144,25 +133,35 @@ function parseDescription(desc = "") {
   };
 }
 
-function Section({ title, bullets }) {
-  if (!bullets?.length) return null;
-  return (
-    <div className="mt-10">
-      <h3 className="text-2xl md:text-3xl font-playfair font-semibold text-[#1E3A3A] text-center">
-        {title}
-      </h3>
-      <ul className="mt-4 space-y-2 max-w-4xl mx-auto list-disc pl-6 text-[#233] leading-7">
-        {bullets.map((b, i) => (
-          <li key={i}>{b}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+    function WhenSection({ title, text }) {
+      if (!text) return null;
+      return (
+        <div className="mt-10 flex flex-col justify-start items-start ">
+          <h3 className="text-2xl md:text-3xl font-playfair font-semibold text-[#1E3A3A] text-center mb-4">
+            {title}
+          </h3>
+          <p className="max-w-4xl mx-auto text-[#233] leading-7 font-poppins">
+            {text}
+          </p>
+        </div>
+      );
+    }
 
-/* ---------- main component ---------- */
+    function ThisSection({title, text}) {
+      if (!text) return null;
+      return (
+        <div className="my-30">
+          <h3 className="text-2xl md:text-3xl font-playfair font-semibold text-[#1E3A3A] text-center mb-4">
+            {title}
+          </h3>
+          <p className="max-w-4xl mx-auto text-[#233] leading-7 font-poppins text-center">
+            {text}
+          </p>
+        </div>
+      );
+    }
+
 function Penjelasan({ province, items = [] }) {
-  // Filter ulang supaya hanya item dari provinsi yang dipilih yang tampil
   const filtered = React.useMemo(() => {
     if (!Array.isArray(items) || !items.length) return [];
     const target = norm(province);
@@ -174,7 +173,7 @@ function Penjelasan({ province, items = [] }) {
   }, [items, province]);
 
   return (
-    <div id="penjelasan" className="max-w-6xl mx-auto py-16">
+    <div id="penjelasan" className="max-w-7xl mx-auto py-26">
       {filtered.length === 0 && (
         <p className="text-center text-[#335]">Belum ada data untuk provinsi ini.</p>
       )}
@@ -197,46 +196,51 @@ function Penjelasan({ province, items = [] }) {
             key={`${it?.id ?? idx}`}
             className={`mb-20 ${idx > 0 ? "pt-12 border-t border-black/10" : ""}`}
           >
-            {/* Header */}
-            <header className="text-center mb-8">
-              <h2 className="font-playfair text-3xl md:text-4xl font-bold text-[#123]">
+            <header className="text-center mt-20 mb-10">
+              <h2 className="font-playfair text-3xl md:text-4xl font-bold text-[#2b4b4b]">
                 {jenis}
               </h2>
-              <p className="text-[#2b4b4b] mt-1">{provName}</p>
+              <p className="text-[#2b4b4b] mt-1 font-poppins">{provName}</p>
             </header>
 
-            {/* Images */}
-            <div className="grid md:grid-cols-2 gap-6 items-start">
-              <div className="rounded-xl overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.18)]">
-                <img
-                  src={hero}
-                  alt={jenis}
-                  className="w-full h-[320px] md:h-[420px] object-cover"
-                  loading="lazy"
-                />
-              </div>
-
-              <div className="flex flex-col gap-6">
+            <div className="grid md:grid-cols-1 gap-50 items-center mt-10">
+              <div className="flex justify-center item-cente">
                 {intro && (
-                  <p className="text-[#223] leading-7 bg-white/70 rounded-xl p-5 shadow-sm">
+                  <p className="text-[#2b4b4b] leading-7 bg-white/70 rounded-xl p-5 shadow-sm font-poppins text-center w-200">
                     {intro}
                   </p>
                 )}
-                <div className="rounded-xl overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
-                  <img
-                    src={pemakaian || PLACEHOLDER}
-                    alt={`Pemakaian ${jenis}`}
-                    className="w-full h-[220px] md:h-[260px] object-cover"
-                    loading="lazy"
-                  />
-                </div>
+              </div>
+
+              <div className="flex justify-center">
+                <img
+                  src={hero}
+                  alt={jenis}
+                  className="w-150 h-[320px] md:h-70 md:w-150 rounded-xl"
+                  loading="lazy"
+                />
               </div>
             </div>
 
-            {/* Sections */}
-            <Section title="Motif & Ciri Khas" bullets={motifList} />
-            <Section title="Fakta Unik" bullets={unikList} />
-            <Section title="Kapan dipakai" bullets={kapanList} />
+            <ThisSection title="Motif & Ciri Khas" text={motifList} />
+            <ThisSection title="Fun Fact" text={unikList} />
+            
+            <div className="flex flex-row md:flex-row justify-center ml-15">
+                <div className="w-100">
+                  <WhenSection title="Kapan dipakai" text={kapanList} />
+                </div>
+
+                {/* Image */}
+                <div className="md:w-1/2 flex justify-center">
+                  <img
+                    src={pemakaian || PLACEHOLDER}
+                    alt={`Pemakaian ${jenis}`}
+                    className="w-full max-w-[350px] md:max-w-[300px] h-auto rounded-xl shadow-lg"
+                    loading="lazy"
+                  />
+                </div>
+            </div>
+
           </article>
         );
       })}
