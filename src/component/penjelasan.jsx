@@ -1,4 +1,3 @@
-// src/component/penjelasan.jsx
 import React from "react";
 
 const API = "https://thistenunbetest-production.up.railway.app";

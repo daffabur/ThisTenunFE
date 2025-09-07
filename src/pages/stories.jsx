@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-/* ====== Konfigurasi ====== */
 const API = "https://thistenunbetest-production.up.railway.app";
 const ENDPOINT = `${API}/api/articles`;
 const PLACEHOLDER =
   "https://via.placeholder.com/1200x800?text=This+Tenun+Article";
 
-/* ====== Helpers ====== */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
@@ -25,7 +23,6 @@ const parseArray = (data) =>
     ? data.items
     : [];
 
-/** format tanggal ke Bahasa Indonesia */
 const formatDate = (iso) => {
   if (!iso) return "—";
   const d = new Date(iso);
@@ -37,7 +34,6 @@ const formatDate = (iso) => {
   });
 };
 
-/* ====== Komponen ====== */
 export default function Stories() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +48,6 @@ export default function Stories() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const arr = parseArray(await res.json());
 
-        // map & sort terbaru dulu
         const mapped = arr
           .map((it) => ({
             id: it.id ?? it.slug,
@@ -84,12 +79,10 @@ export default function Stories() {
   const hero = useMemo(() => items[0] || null, [items]);
   const list = useMemo(() => (items.length > 1 ? items.slice(1) : []), [items]);
 
-  // skeletons
   const skeletonCards = new Array(8).fill(0);
 
   return (
     <div className="min-h-screen bg-[#402923]">
-      {/* HERO */}
       <div className="max-w-7xl mx-auto px-4 pt-24 sm:pt-28 md:pt-32 lg:pt-40">
         <article className="relative overflow-hidden rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/10">
           <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] bg-[#261814]">
@@ -110,7 +103,6 @@ export default function Stories() {
             )}
           </div>
 
-          {/* Overlay text */}
           <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 md:p-8">
             {loading ? (
               <div className="space-y-3">
@@ -139,7 +131,6 @@ export default function Stories() {
         </article>
       </div>
 
-      {/* LIST */}
       <div className="max-w-7xl mx-auto px-4 pb-16 sm:pb-20">
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {(loading ? skeletonCards : list).map((p, i) =>

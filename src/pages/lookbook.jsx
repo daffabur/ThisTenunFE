@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 const API = "https://thistenunbetest-production.up.railway.app";
 const PLACEHOLDER = "https://via.placeholder.com/600x800?text=This+Tenun";
 
-/* Helpers */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
@@ -23,8 +22,8 @@ function Lookbook() {
     <div className="bg-[#2A3E3F] min-h-screen">
       <header className="px-4 pt-20 pb-8 sm:pt-24 sm:pb-10">
         <h1 className="text-center text-white font-poppins text-2xl my-10 md:text-4xl">
-            Find Your Style on <br/>
-            Lookbook by <span className="font-playfair">| This Tenun</span>
+          Find Your Style on <br />
+          Lookbook by <span className="font-playfair">| This Tenun</span>
         </h1>
       </header>
       <Gallery />
@@ -64,13 +63,11 @@ function Gallery() {
     return () => ac.abort();
   }, []);
 
-  // Lock scroll saat modal buka
   useEffect(() => {
     document.body.style.overflow = modalIndex >= 0 ? "hidden" : "";
     return () => (document.body.style.overflow = "");
   }, [modalIndex]);
 
-  // Escape untuk tutup modal
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setModalIndex(-1);
     window.addEventListener("keydown", onKey);
@@ -87,7 +84,6 @@ function Gallery() {
         </div>
       )}
 
-      {/* Masonry dengan CSS columns, responsif */}
       <div className="columns-1 xs:columns-2 sm:columns-3 xl:columns-4 gap-4 sm:gap-6 [column-fill:_balance]">
         {(loading ? skeletons : items).map((it, i) => (
           <figure
@@ -115,24 +111,28 @@ function Gallery() {
         ))}
       </div>
 
-      {/* ===== Modal (klik backdrop untuk tutup) ===== */}
       {modalIndex >= 0 && items[modalIndex] && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-auto"
           onClick={(e) => {
             if (e.target === e.currentTarget) setModalIndex(-1);
           }}
           role="dialog"
           aria-modal="true"
         >
-          <div className="relative w-[92vw] sm:w-auto max-w-[94vw] sm:max-w-[85vw] max-h-[88vh] sm:max-h-[90vh]">
+          <div className="relative mx-auto">
             <img
               src={items[modalIndex].url}
               alt={items[modalIndex].title || "Preview"}
-              className="block w-full h-full object-contain rounded-xl"
+              className="
+                block
+                w-auto h-auto
+                max-w-[92vw] sm:max-w-[85vw]
+                max-h-[85vh] sm:max-h-[90vh]
+                object-contain rounded-xl
+              "
             />
 
-            {/* Tombol close besar (mudah di-tap) */}
             <button
               aria-label="Close"
               onClick={() => setModalIndex(-1)}
@@ -141,7 +141,6 @@ function Gallery() {
               ×
             </button>
 
-            {/* Credit / Source (opsional) */}
             {(items[modalIndex].credit || items[modalIndex].sourceUrl) && (
               <figcaption className="absolute left-3 right-12 bottom-3 text-xs sm:text-sm text-white/90">
                 {items[modalIndex].credit && (

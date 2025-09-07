@@ -1,13 +1,10 @@
-// src/pages/story-detail.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-/* ====== Konfigurasi ====== */
 const API = "https://thistenunbetest-production.up.railway.app";
 const PLACEHOLDER =
   "https://via.placeholder.com/1200x800?text=This+Tenun+Article";
 
-/* ====== Helpers ====== */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
@@ -117,7 +114,6 @@ export default function StoryDetail() {
 
   return (
     <div className="min-h-screen bg-[#402923] text-white">
-      {/* 👉 Lebarkan container: max-w-6xl & padding horizontal diperbesar */}
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 pt-28 md:pt-32 lg:pt-36 pb-24">
         {err && (
           <div className="mb-6 rounded-xl border border-red-400/30 bg-red-900/30 p-4">

@@ -356,7 +356,6 @@ function Explore() {
       >
 
         <div className="w-full max-w-6xl px-3 sm:px-6">
-          {/* tinggi adaptif per breakpoint */}
           <div className="w-full h-[320px] sm:h-[420px] md:h-[520px]">
             <IndonesiaMap
               onSelect={handleSelect}

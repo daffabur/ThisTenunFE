@@ -1,4 +1,3 @@
-// src/component/IndonesiaMap.jsx
 import { useEffect, useMemo, useState, memo } from "react";
 import { geoMercator, geoPath, geoArea } from "d3-geo";
 import * as topo from "topojson-client";
@@ -6,11 +5,11 @@ import * as topo from "topojson-client";
 const API = "https://thistenunbetest-production.up.railway.app";
 const DATA_URL = "/data/indonesia-provinces.topo.json";
 
-// viewBox tetap; ukuran tampilan mengikuti parent (w-full h-full)
+
 const VIEW_W = 1200;
 const VIEW_H = 700;
 
-// kecilkan helper biar aman di berbagai bentuk response
+
 const asArray = (d) =>
   Array.isArray(d)
     ? d
@@ -25,7 +24,6 @@ const asArray = (d) =>
 function IndonesiaMap({ onSelect, onHover, onLeave, className = "" }) {
   const [features, setFeatures] = useState([]);
 
-  // fetch file topo/geojson
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -35,7 +33,6 @@ function IndonesiaMap({ onSelect, onHover, onLeave, className = "" }) {
 
         let feats = [];
         if (data?.type === "Topology") {
-          // ambil objek dengan geometries terbanyak (umumnya provinsi)
           const key = Object.keys(data.objects || {}).sort(
             (a, b) =>
               (data.objects[b]?.geometries?.length || 0) -
@@ -61,7 +58,6 @@ function IndonesiaMap({ onSelect, onHover, onLeave, className = "" }) {
     [features]
   );
 
-  // Fit semua fitur ke viewbox dengan sedikit padding
   const projection = useMemo(() => {
     const pad = 12;
     const proj = geoMercator();
@@ -78,7 +74,6 @@ function IndonesiaMap({ onSelect, onHover, onLeave, className = "" }) {
 
   const path = useMemo(() => geoPath(projection), [projection]);
 
-  // Urut besar → kecil (yang kecil digambar terakhir = di atas)
   const ordered = useMemo(() => {
     return features
       .map((f, i) => {
@@ -150,7 +145,6 @@ function IndonesiaMap({ onSelect, onHover, onLeave, className = "" }) {
             }}
             onMouseLeave={(e) => {
               e.currentTarget.setAttribute("fill", "#BABABA");
-              // onLeave dipanggil dari SVG onMouseLeave juga, tapi aman dipanggil di sini
               onLeave?.();
             }}
             onClick={async () => {

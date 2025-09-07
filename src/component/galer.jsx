@@ -1,10 +1,8 @@
-// src/component/galer.jsx
 import { useEffect, useState, useCallback, useRef } from "react";
 
 const API = "https://thistenunbetest-production.up.railway.app";
 const PLACEHOLDER = "https://via.placeholder.com/600x800?text=This+Tenun";
 
-/* helpers */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
@@ -19,17 +17,14 @@ const parseArray = (data) =>
     ? data.items
     : [];
 
-/* component */
 export default function Gallery() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
 
-  // lightbox state
-  const [active, setActive] = useState(null); // index atau null
+  const [active, setActive] = useState(null);
   const hasItems = items && items.length > 0;
 
-  // fetch data
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -59,7 +54,6 @@ export default function Gallery() {
     return () => ac.abort();
   }, []);
 
-  // Lock scroll saat modal aktif
   useEffect(() => {
     if (active != null) {
       const prev = document.body.style.overflow;
@@ -70,7 +64,6 @@ export default function Gallery() {
     }
   }, [active]);
 
-  // keyboard nav utk lightbox
   useEffect(() => {
     if (active == null) return;
     const onKey = (e) => {
@@ -84,7 +77,6 @@ export default function Gallery() {
     return () => window.removeEventListener("keydown", onKey);
   }, [active, items.length]);
 
-  // basic swipe (mobile)
   const startX = useRef(null);
   const onTouchStart = useCallback((e) => {
     startX.current = e.touches?.[0]?.clientX ?? null;
@@ -94,12 +86,10 @@ export default function Gallery() {
       if (startX.current == null || active == null) return;
       const endX = e.changedTouches?.[0]?.clientX ?? startX.current;
       const dx = endX - startX.current;
-      const THRESH = 40; // minimal swipe px
+      const THRESH = 40;
       if (dx > THRESH) {
-        // swipe right → prev
         setActive((i) => (i > 0 ? i - 1 : items.length - 1));
       } else if (dx < -THRESH) {
-        // swipe left → next
         setActive((i) => (i < items.length - 1 ? i + 1 : 0));
       }
       startX.current = null;
@@ -117,7 +107,6 @@ export default function Gallery() {
         </div>
       )}
 
-      {/* Masonry dengan CSS columns, responsif */}
       <div className="columns-1 sm:columns-2 md:columns-3 xl:columns-4 gap-4 sm:gap-6 [column-fill:_balance]">
         {(loading ? skeletons : items).map((it, i) => (
           <figure
@@ -141,12 +130,10 @@ export default function Gallery() {
                 onClick={() => setActive(i)}
               />
             )}
-            {/* Caption DIHILANGKAN untuk tampilan bersih */}
           </figure>
         ))}
       </div>
 
-      {/* LIGHTBOX */}
       {active != null && hasItems && items[active] && (
         <div
           className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
@@ -166,7 +153,6 @@ export default function Gallery() {
               className="block w-full h-full object-contain rounded-xl shadow-2xl"
             />
 
-            {/* Close (besar & mudah di-tap) */}
             <button
               onClick={() => setActive(null)}
               className="absolute -top-3 -right-3 sm:top-2 sm:right-2 h-10 w-10 sm:h-9 sm:w-9 grid place-items-center rounded-full bg-white/90 hover:bg-white text-black text-2xl leading-none shadow"
@@ -176,7 +162,6 @@ export default function Gallery() {
               ×
             </button>
 
-            {/* Prev / Next (terlihat di HP & mudah di-tap) */}
             {items.length > 1 && (
               <>
                 <button
@@ -198,7 +183,6 @@ export default function Gallery() {
               </>
             )}
 
-            {/* Credit / Source (opsional) */}
             {(items[active].credit || items[active].sourceUrl) && (
               <figcaption className="absolute left-3 right-12 bottom-3 text-[11px] sm:text-xs text-white/90">
                 {items[active].credit && (
