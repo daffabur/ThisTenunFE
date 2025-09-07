@@ -5,12 +5,14 @@ import Hero from "../assets/hero.svg";
 import figure1 from "../assets/1.svg";
 import Ulos from "../assets/ulos.svg";
 import Arrow from "../assets/arrow.svg";
-import Gal from "../assets/gallery.svg"; 
+import Gal from "../assets/Gallery.svg"; // fallback untuk inspo
 import artic from "../assets/article.svg";
 
+// dua Link berbeda: scroll & router (pakai alias supaya tidak bentrok)
 import { Link as ScrollLink } from "react-scroll";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as a } from "react-router-dom";
 
+/* ==== konfigurasi fetch API ==== */
 const API = "https://thistenunbetest-production.up.railway.app";
 const ENDPOINT_ARTICLES = `${API}/api/articles`;
 const ENDPOINT_TENUN = `${API}/api/tenun`;
@@ -18,8 +20,10 @@ const ENDPOINT_INSPO = `${API}/api/inspo`;
 const PLACEHOLDER =
   "https://via.placeholder.com/1200x800?text=This+Tenun+Article";
 
+/* berapa banyak inspo yang ditampilkan */
 const INSPO_TAKE = 9;
 
+/* ===== helpers ===== */
 const absolutize = (url) => {
   if (!url) return null;
   const s = String(url).trim();
@@ -64,18 +68,22 @@ const formatDate = (iso) => {
 };
 
 function Home() {
+  // ===== STORIES (section paling bawah) =====
   const [stories, setStories] = useState([]);
   const [loadingStories, setLoadingStories] = useState(true);
   const [errStories, setErrStories] = useState(null);
 
+  // ===== TENUN (Explore) =====
   const [tenunList, setTenunList] = useState([]);
   const [loadingTenun, setLoadingTenun] = useState(true);
   const [errTenun, setErrTenun] = useState(null);
 
+  // ===== INSPO (Lookbook masonry) =====
   const [inspoList, setInspoList] = useState([]);
   const [loadingInspo, setLoadingInspo] = useState(true);
   const [errInspo, setErrInspo] = useState(null);
 
+  /* ---------- Fetch STORIES ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -114,6 +122,7 @@ function Home() {
     return () => ac.abort();
   }, []);
 
+  /* ---------- Fetch TENUN (Explore) ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -149,6 +158,7 @@ function Home() {
     return () => ac.abort();
   }, []);
 
+  /* ---------- Fetch INSPO (Lookbook masonry) ---------- */
   useEffect(() => {
     const ac = new AbortController();
     (async () => {
@@ -177,6 +187,7 @@ function Home() {
           })
           .filter(Boolean);
 
+        // acak dan ambil N
         const shuffled = imgs
           .map((x) => ({ x, r: Math.random() }))
           .sort((a, b) => a.r - b.r)
@@ -202,6 +213,7 @@ function Home() {
     [stories]
   );
 
+  /* Masonry breakpoints */
   const masonryBreakpoints = {
     default: 3,
     1280: 3,
@@ -210,13 +222,16 @@ function Home() {
     640: 1,
   };
 
+  /* ==== helper untuk grid 2×2 di mobile (Explore) ==== */
   const mobileExploreItems = useMemo(() => {
+    // ambil 3 tenun + 1 kartu "See All" supaya pas 2x2
     const base = tenunList.slice(0, 3);
     return base;
   }, [tenunList]);
 
   return (
     <div className="bg-[#2A3E3F]">
+      {/* ===== HERO TOP ===== */}
       <div className="relative h-screen w-full">
         <img src={Hero} alt="Tenun hero" className="h-full w-full object-cover" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4">
@@ -228,7 +243,7 @@ function Home() {
             traditions woven by the hands of Indonesia’s artisans
           </p>
           <ScrollLink
-            to="2"
+            href="2"
             smooth={true}
             duration={1200}
             offset={0}
@@ -239,55 +254,45 @@ function Home() {
         </div>
       </div>
 
-      {/* ================== WHAT IS TENUN (fixed to match Figma) ================== */}
-      <div
-        id="2"
-        className="bg-[#452C27] w-full"
+      {/* ===== WHAT IS TENUN ===== */}
+      <div id="2"
+        className="bg-[#452C27] w-full flex flex-col md:flex-row md:items-start gap-10 md:gap-30 px-6 lg:px-16 py-16 md:pt-30 md:pb-40"
       >
-        <div className="mx-auto max-w-7xl px-6 lg:px-16 py-16 md:py-24 grid grid-cols-1 md:grid-cols-[minmax(0,620px)_minmax(0,460px)] gap-10 md:gap-16 items-start">
-          {/* Left text block */}
-          <div className="md:pr-8">
-            <h1 className="inline-block border-2 border-[#F6D69B] rounded-full px-6 pt-2 pb-3 font-playfair font-bold text-white text-3xl md:text-5xl">
-              What is Tenun?
-            </h1>
+        <div className="md:flex-1 md:mt-15 md:ml-12 relative order-2 md:order-1">
+          <h1 className="inline-block border-2 border-[#F6D69B] rounded-full px-6 pt-2 pb-3 font-playfair font-bold text-white text-3xl md:text-5xl">
+            What is Tenun?
+          </h1>
+          <p className="text-white text-justify md:text-left md:pl-8 mt-5 md:w-120 max-w-[54ch] text-base font-poppins font-light">
+            Tenun is Indonesia’s handwoven textile art, created by intertwining
+            threads on a loom. Each region across the archipelago has its own
+            distinctive tenun, carrying unique motifs, colors, and stories that
+            reflect local culture and identity.<br /> <br />
+            More than just fabric, tenun is a heritage passed down through
+            generations — once worn in rituals and ceremonies, now inspiring
+            modern fashion and creative expression.
+          </p>
 
-            <div className="md:pl-8 mt-5 max-w-[54ch]">
-              <p className="text-white text-base font-poppins font-light text-justify md:text-left">
-                Tenun is Indonesia’s handwoven textile art, created by intertwining
-                threads on a loom. Each region across the archipelago has its own
-                distinctive tenun, carrying unique motifs, colors, and stories that
-                reflect local culture and identity.
-              </p>
-              <p className="text-white text-base font-poppins font-light mt-6 text-justify md:text-left">
-                More than just fabric, tenun is a heritage passed down through
-                generations — once worn in rituals and ceremonies, now inspiring
-                modern fashion and creative expression.
-              </p>
-
-              {/* Button kecil, rata kanan */}
-              <div className="mt-5 flex justify-end">
-                <RouterLink
-                  to="/about"
-                  className="inline-flex items-center border border-[#F6D69B] rounded-full px-4 py-1 text-sm text-white hover:bg-[#F6D69B]/10 transition"
-                >
-                  Discover more
-                </RouterLink>
-              </div>
-            </div>
-          </div>
-
-          {/* Right image */}
-          <div className="flex justify-end">
-            <img
-              src={figure1}
-              alt="figure1"
-              className="w-[420px] lg:w-[460px] max-w-full rounded-xl shadow-lg object-cover md:mt-1"
-            />
+          <div className="mt-6 md:mt-0 md:absolute md:right-0">
+            <a
+              href="/about"
+              className="inline-block border border-[#F6D69B] rounded-full px-6 py-2 text-white"
+            >
+              Find Out
+            </a>
           </div>
         </div>
-      </div>
-      {/* ======================================================================== */}
 
+        <div className="md:flex-1 flex justify-center md:justify-start order-1 md:order-2">
+          <img
+            src={figure1}
+            alt="figure1"
+            className="w-72 sm:w-80 md:w-96 lg:w-[20rem] rounded-xl mt-2 md:mt-6"
+          />
+        </div>
+      </div>
+
+
+      {/* ===== EXPLORE ===== */}
       <div className="bg-[#2A3E3F] flex flex-col py-28 md:py-32">
         <div className="font-playfair font-bold text-white text-4xl sm:text-5xl flex flex-col items-center px-4">
           <h1 className="inline-flex items-center justify-center mx-auto text-center border-2 border-[#F6D69B] rounded-full px-8 py-1 max-w-[90%]">
@@ -296,6 +301,7 @@ function Home() {
           <h1 className="mt-2 text-center">Across Indonesia</h1>
         </div>
 
+        {/* MOBILE: Grid 2x2 tanpa slide */}
         <div className="mt-12 w-full px-4 md:hidden">
           {loadingTenun ? (
             <div className="grid grid-cols-2 gap-5">
@@ -323,18 +329,19 @@ function Home() {
                   </p>
                 </div>
               ))}
-
-              <RouterLink to="/explore" className="relative block">
+              {/* Kartu ke-4 = See All */}
+              <a href="/explore" className="relative block">
                 <img src={Ulos} alt="See all" className="w-full h-56 rounded-lg object-cover" />
                 <img src={Arrow} alt="arrow" className="w-5 absolute inset-0 m-auto top-[42%]" />
                 <p className="absolute inset-0 flex items-center justify-center text-center px-8 leading-6 font-poppins text-white text-base">
                   See All Regions
                 </p>
-              </RouterLink>
+              </a>
             </div>
           )}
         </div>
 
+        {/* DESKTOP/TABLET: layout asli berjajar 4 */}
         <div className="hidden md:block">
           <div className="md:justify-center md:gap-10 flex gap-6 mt-12 px-4">
             {loadingTenun ? (
@@ -367,8 +374,9 @@ function Home() {
                   </div>
                 ))}
 
+                {/* Card terakhir: See All */}
                 <div className="relative transform transition duration-300 hover:-translate-y-2 hover:shadow-lg">
-                  <RouterLink to="/explore">
+                  <a href="/explore">
                     <img
                       src={Ulos}
                       alt="See all"
@@ -382,7 +390,7 @@ function Home() {
                     <p className="absolute inset-0 flex items-center justify-center text-center px-10 mt-4 leading-6 font-poppins text-white text-lg">
                       See All Regions
                     </p>
-                  </RouterLink>
+                  </a>
                 </div>
               </>
             )}
@@ -397,19 +405,20 @@ function Home() {
         </div>
       </div>
 
+      {/* ===== LOOKBOOK ===== */}
       <div className="flex flex-col bg-[#452C27]">
         <div className="mt-20 mb-6 flex justify-center items-center gap-3 relative px-4 md:pl-20">
           <h1 className="font-playfair text-white font-bold text-4xl sm:text-5xl text-center leading-tight">
             Discover Your <br className="sm:hidden" /> <br/>
             <span className="inline-flex items-center gap-2 ">Outfit With Tenun</span>
           </h1>
-          <RouterLink
-            to="/lookbook"
+          <a
+            href="/lookbook"
             className="ml-2 hover:scale-110 transition-transform"
             aria-label="Go to Lookbook"
           >
             <img src={Arrow} alt="" className="w-8 inline-block align-middle" />
-          </RouterLink>
+          </a>
         </div>
 
         <div className="flex justify-center px-6 pb-20">
@@ -435,7 +444,7 @@ function Home() {
                   className="w-full rounded-2xl object-cover"
                   loading="lazy"
                   onError={(e) => {
-                    e.currentTarget.src = Gal;
+                    e.currentTarget.src = Gal; // fallback lokal
                   }}
                 />
               ))}
@@ -446,6 +455,7 @@ function Home() {
         </div>
       </div>
 
+      {/* ===== THREADS OF STORIES ===== */}
       <div className="bg-[#2A3E3F] flex flex-col">
         <div className="flex flex-row items-center px-4 md:px-10">
           <div className="mt-9 bg-white w-1 h-22" />
@@ -455,12 +465,13 @@ function Home() {
         </div>
 
         <div className="flex flex-col md:flex-row md:items-start mb-20 gap-8 md:gap-10 justify-center px-4 md:px-6">
+          {/* kiri: hero card */}
           <div className="flex flex-col bg-white rounded-2xl mb-4 md:mb-10 max-w-[700px] w-full">
             <div className="px-5 pt-5">
               {loadingStories ? (
                 <div className="w-full h-[360px] rounded-xl bg-black/10 animate-pulse" />
               ) : hero ? (
-                <RouterLink to={`/stories/${encodeURIComponent(hero.slug || "")}`}>
+                <a href={`/stories/${encodeURIComponent(hero.slug || "")}`}>
                   <img
                     src={hero.image || artic}
                     alt={hero.title}
@@ -469,7 +480,7 @@ function Home() {
                       e.currentTarget.src = PLACEHOLDER;
                     }}
                   />
-                </RouterLink>
+                </a>
               ) : (
                 <img src={artic} alt="placeholder" className="w-full rounded-xl" />
               )}
@@ -491,11 +502,11 @@ function Home() {
               ) : hero ? (
                 <>
                   <p className="text-xs text-black/60 mb-1">{formatDate(hero.date)}</p>
-                  <RouterLink to={`/stories/${encodeURIComponent(hero.slug || "")}`}>
+                  <a href={`/stories/${encodeURIComponent(hero.slug || "")}`}>
                     <h2 className="ml-0 font-poppins font-bold text-xl text-black hover:underline">
                       {hero.title}
                     </h2>
-                  </RouterLink>
+                  </a>
                   {hero.summary && (
                     <p className="ml-0 mt-2 font-poppins text-sm text-black/80">{hero.summary}</p>
                   )}
@@ -506,11 +517,12 @@ function Home() {
             </div>
           </div>
 
+          {/* kanan: list + See All di dalam kotak */}
           <div className="relative bg-white rounded-2xl flex justify-center max-w-[700px] w-full">
             <div className="absolute right-6 top-4">
-              <RouterLink to="/stories" className="underline font-poppins hover:opacity-80">
+              <a href="/stories" className="underline font-poppins hover:opacity-80">
                 See All
-              </RouterLink>
+              </a>
             </div>
 
             <div className="flex flex-col gap-5 mt-16 py-8 px-5 sm:px-8 w-full">
@@ -525,9 +537,9 @@ function Home() {
                     </div>
                   </div>
                 ) : (
-                  <RouterLink
+                  <a
                     key={p.id}
-                    to={`/stories/${encodeURIComponent(p.slug || "")}`}
+                    href={`/stories/${encodeURIComponent(p.slug || "")}`}
                     className="group"
                   >
                     <div className="flex flex-row items-center gap-4">
@@ -543,12 +555,12 @@ function Home() {
                         <p className="text-poppins font-light text-xs text-black/60">
                           {formatDate(p.date)}
                         </p>
-                        <h3 className="max-w/[22rem] sm:max-w-[26rem] text-poppins font-semibold text-sm leading-5 text-black group-hover:underline">
+                        <h3 className="max-w-[22rem] sm:max-w-[26rem] text-poppins font-semibold text-sm leading-5 text-black group-hover:underline">
                           {p.title}
                         </h3>
                       </div>
                     </div>
-                  </RouterLink>
+                  </a>
                 )
               )}
 
