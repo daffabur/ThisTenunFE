@@ -255,15 +255,14 @@ function Home() {
       </div>
 
       {/* ===== WHAT IS TENUN ===== */}
-      <div
-        id="2"
-        className="bg-[#452C27] w-full flex flex-col md:flex-row md:items-start gap-10 md:gap-12 px-6 md:px-10 lg:px-16 py-16 md:py-24"
+      <div id="2"
+        className="bg-[#452C27] w-full flex flex-col md:flex-row md:items-start gap-10 md:gap-30 px-6 lg:px-16 py-16 md:pt-30 md:pb-40"
       >
-        <div className="md:flex-1">
+        <div className="md:flex-1 md:mt-15 md:ml-12 relative order-2 md:order-1">
           <h1 className="inline-block border-2 border-[#F6D69B] rounded-full px-6 pt-2 pb-3 font-playfair font-bold text-white text-3xl md:text-5xl">
             What is Tenun?
           </h1>
-          <p className="text-white text-justify md:pl-10 mt-5 max-w-[54ch] text-base font-poppins font-light">
+          <p className="text-white text-justify md:text-left md:pl-8 mt-5 md:w-120 max-w-[54ch] text-base font-poppins font-light">
             Tenun is Indonesia’s handwoven textile art, created by intertwining
             threads on a loom. Each region across the archipelago has its own
             distinctive tenun, carrying unique motifs, colors, and stories that
@@ -272,20 +271,26 @@ function Home() {
             generations — once worn in rituals and ceremonies, now inspiring
             modern fashion and creative expression.
           </p>
-          <div className="mt-6 md:pl-10">
-            <RouterLink
-              to="/about"
+
+          <div className="mt-6 md:mt-0 md:absolute md:right-0">
+            <a
+              href="/about"
               className="inline-block border border-[#F6D69B] rounded-full px-6 py-2 text-white"
             >
               Find Out
-            </RouterLink>
+            </a>
           </div>
         </div>
 
-        <div className="md:flex-1 flex justify-center md:justify-start">
-          <img src={figure1} alt="figure1" className="w-72 sm:w-80 md:w-96 lg:w-[28rem] rounded-xl mt-2 md:mt-6" />
+        <div className="md:flex-1 flex justify-center md:justify-start order-1 md:order-2">
+          <img
+            src={figure1}
+            alt="figure1"
+            className="w-72 sm:w-80 md:w-96 lg:w-[20rem] rounded-xl mt-2 md:mt-6"
+          />
         </div>
       </div>
+
 
       {/* ===== EXPLORE ===== */}
       <div className="bg-[#2A3E3F] flex flex-col py-28 md:py-32">
@@ -355,12 +360,12 @@ function Home() {
                     <img
                       src={t.image}
                       alt={t.name}
-                      className="w-40 h-56 mt-4 rounded-lg object-cover"
+                      className="w-40 h-56 mt-4 rounded-2xl object-cover"
                       onError={(e) => {
                         e.currentTarget.src = PLACEHOLDER;
                       }}
                     />
-                    <p className="absolute bottom-8 left-2 font-playfair text-white text-sm font-bold">
+                    <p className="absolute bottom-6 left-2 font-playfair text-white text-sm font-bold">
                       {t.name}
                     </p>
                     <p className="absolute bottom-2 left-2 font-poppins text-white text-xs">
@@ -375,12 +380,12 @@ function Home() {
                     <img
                       src={Ulos}
                       alt="See all"
-                      className="w-40 mt-4 rounded-lg object-cover"
+                      className="w-40 md:w-43 mt-4 object-cover"
                     />
                     <img
                       src={Arrow}
                       alt="arrow"
-                      className="w-5 mt-5 absolute inset-0 ml-33"
+                      className="w-5 mt-6 absolute inset-0 ml-36"
                     />
                     <p className="absolute inset-0 flex items-center justify-center text-center px-10 mt-4 leading-6 font-poppins text-white text-lg">
                       See All Regions
@@ -402,10 +407,10 @@ function Home() {
 
       {/* ===== LOOKBOOK ===== */}
       <div className="flex flex-col bg-[#452C27]">
-        <div className="mt-20 mb-6 flex justify-center items-center gap-3 relative px-4">
+        <div className="mt-20 mb-6 flex justify-center items-center gap-3 relative px-4 md:pl-20">
           <h1 className="font-playfair text-white font-bold text-4xl sm:text-5xl text-center leading-tight">
-            Discover Your <br className="sm:hidden" />
-            <span className="inline-flex items-center gap-2">Outfit With Tenun</span>
+            Discover Your <br className="sm:hidden" /> <br/>
+            <span className="inline-flex items-center gap-2 ">Outfit With Tenun</span>
           </h1>
           <RouterLink
             to="/lookbook"
@@ -418,7 +423,7 @@ function Home() {
 
         <div className="flex justify-center px-6 pb-20">
           {loadingInspo ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-xl">
               {new Array(INSPO_TAKE).fill(0).map((_, i) => (
                 <div key={i} className="w-full h-72 bg-black/20 rounded-2xl animate-pulse" />
               ))}
@@ -428,7 +433,7 @@ function Home() {
           ) : inspoList.length ? (
             <Masonry
               breakpointCols={masonryBreakpoints}
-              className="flex gap-6 w-full max-w-5xl"
+              className="flex gap-6 w-full md:w-220 max-w-5xl md:mt-30"
               columnClassName="flex flex-col gap-6"
             >
               {inspoList.map((p) => (

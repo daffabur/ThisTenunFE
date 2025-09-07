@@ -22,13 +22,9 @@ function Lookbook() {
   return (
     <div className="bg-[#2A3E3F] min-h-screen">
       <header className="px-4 pt-20 pb-8 sm:pt-24 sm:pb-10">
-        <h1 className="text-center text-white font-poppins leading-tight">
-          <span className="block text-2xl sm:text-3xl md:text-4xl">
-            Find Your Style on
-          </span>
-          <span className="block text-3xl sm:text-4xl md:text-5xl mt-1">
+        <h1 className="text-center text-white font-poppins text-2xl my-10 md:text-4xl">
+            Find Your Style on <br/>
             Lookbook by <span className="font-playfair">| This Tenun</span>
-          </span>
         </h1>
       </header>
       <Gallery />

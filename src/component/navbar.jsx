@@ -4,7 +4,6 @@ import { Link, NavLink } from "react-router-dom";
 function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // lock body scroll saat menu terbuka
   useEffect(() => {
     if (open) document.body.classList.add("overflow-hidden");
     else document.body.classList.remove("overflow-hidden");

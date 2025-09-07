@@ -142,8 +142,8 @@ function WhenSection({ title, text }) {
 function ThisSection({ title, text }) {
   if (!text) return null;
   return (
-    <div className="my-10">
-      <h3 className="text-2xl md:text-3xl font-playfair font-semibold text-[#1E3A3A] mb-4 text-center">
+    <div className="my-30">
+      <h3 className="text-2xl md:text-3xl font-playfair font-semibold text-[#1E3A3A] mb-10 text-center">
         {title}
       </h3>
       <p className="max-w-4xl mx-auto text-[#233] leading-7 font-poppins text-center">
@@ -198,29 +198,29 @@ function Penjelasan({ province, items = [] }) {
               <p className="text-[#2b4b4b] mt-1 font-poppins">{provName}</p>
             </header>
 
-            <div className="flex flex-col md:flex-row md:items-center md:gap-10 mt-8">
-              {intro && (
-                <div className="flex-1">
-                  <p className="text-[#2b4b4b] leading-7 bg-white/70 rounded-xl p-5 shadow-sm font-poppins text-center md:text-left">
-                    {intro}
-                  </p>
+            <div className="flex flex-col md:flex-col md:items-center md:gap-10 mt-8 md:mb-10">
+                <div className="flex-1 flex justify-center mt-6 md:mt-0">
+                  <img
+                    src={hero}
+                    alt={jenis}
+                    className="w-full max-w-[500px] h-auto rounded-xl shadow-md"
+                    loading="lazy"
+                  />
                 </div>
-              )}
 
-              <div className="flex-1 flex justify-center mt-6 md:mt-0">
-                <img
-                  src={hero}
-                  alt={jenis}
-                  className="w-full max-w-[500px] h-auto rounded-xl shadow-md"
-                  loading="lazy"
-                />
-              </div>
+                {intro && (
+                  <div className="flex-1">
+                    <p className="text-[#2b4b4b] leading-7 md:w-210 bg-white/70 rounded-xl p-5 shadow-sm font-poppins text-center md:text-sm md:text-center">
+                      {intro}
+                    </p>
+                  </div>
+                )}
             </div>
 
             <ThisSection title="Motif & Ciri Khas" text={motifList} />
             <ThisSection title="Fun Fact" text={unikList} />
 
-            <div className="flex flex-col md:flex-row items-center md:items-start md:gap-8 mt-12">
+            <div className="flex flex-col md:flex-row items-center md:items-start md:gap-8 mt-12 md:my-50">
               <div className="flex-1">
                 <WhenSection title="Kapan dipakai" text={kapanList} />
               </div>
