@@ -2,7 +2,60 @@
   "hash": "069b2ea7",
   "configHash": "6b290567",
   "lockfileHash": "1f07daff",
-  "browserHash": "e28ae8e1",
-  "optimized": {},
-  "chunks": {}
+  "browserHash": "ba5caee5",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "da31f537",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "2ff66460",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "3c495a13",
+      "needsInterop": false
+    },
+    "react-scroll": {
+      "src": "../../node_modules/react-scroll/modules/index.js",
+      "file": "react-scroll.js",
+      "fileHash": "58dec9bf",
+      "needsInterop": true
+    },
+    "react-masonry-css": {
+      "src": "../../node_modules/react-masonry-css/dist/react-masonry-css.module.js",
+      "file": "react-masonry-css.js",
+      "fileHash": "db55f7ef",
+      "needsInterop": false
+    },
+    "d3-geo": {
+      "src": "../../node_modules/d3-geo/src/index.js",
+      "file": "d3-geo.js",
+      "fileHash": "460bb989",
+      "needsInterop": false
+    },
+    "topojson-client": {
+      "src": "../../node_modules/topojson-client/src/index.js",
+      "file": "topojson-client.js",
+      "fileHash": "2a49c422",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-IIT576ZH": {
+      "file": "chunk-IIT576ZH.js"
+    },
+    "chunk-3VDXVL42": {
+      "file": "chunk-3VDXVL42.js"
+    },
+    "chunk-5WRI5ZAA": {
+      "file": "chunk-5WRI5ZAA.js"
+    }
+  }
 }
